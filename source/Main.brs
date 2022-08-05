@@ -30,7 +30,6 @@ sub Main()
       msg = wait(0, m.port)
       msgType = type(msg)
       kb = scene.findNode("kb")
-      logEvent (msg)
       if m.playing = false then
         if kb.buttonSelected = 0 then
             kb.visible=false
@@ -211,79 +210,4 @@ Function timeNow () As String
     ss = Right ("0" + dt.GetSeconds ().ToStr (), 2)
     mmm = Right ("00" + dt.GetMilliseconds ().ToStr (), 3)
     Return hh + ":" + mm + ":" + ss + "." + mmm
-End Function
-Function logEvent (msg As Object) As Void
-    message = ""
-    index = 0
-    info = Invalid
-    If msg = Invalid
-        Print timeNow (); "  Timeout"
-    Else
-        msgType = Type (msg)
-        If msgType = "roVideoScreenEvent" Or msgType = "roVideoPlayerEvent"
-            If msg.IsStreamStarted()
-                evType = "IsStreamStarted"
-                index = msg.GetIndex()
-                info = msg.GetInfo()
-            Else If msg.IsPlaybackPosition()
-                evType = "IsPlaybackPosition"
-                index = msg.GetIndex()
-            Else If msg.IsRequestFailed()
-                evType = "IsRequestFailed"
-                message = msg.GetMessage()
-                index = msg.GetIndex()
-                info = msg.GetInfo()
-            Else If msg.IsStatusMessage()
-                evType = "IsStatusMessage"
-                message = msg.GetMessage()
-            Else If msg.IsFullResult()
-                evType = "IsFullResult"
-            Else If msg.IsPartialResult()
-                evType = "IsPartialResult"
-            Else If msg.IsPaused()
-                evType = "IsPaused"
-            Else If msg.IsResumed()
-                evType = "IsResumed"
-            Else If msg.IsScreenClosed()
-                evType = "IsScreenClosed"
-            Else If msg.IsStreamSegmentInfo()
-                evType = "IsStreamSegmentInfo"
-                message = msg.GetMessage ()
-                index = msg.GetIndex()
-                info = msg.GetInfo()
-            Else If msg.IsDownloadSegmentInfo()    ' Undocumented event
-                evType = "IsDownloadSegmentInfo"
-                message = msg.GetMessage()
-                index = msg.GetIndex()
-                info = msg.GetInfo()
-            Else If msg.IsListItemSelected()       ' Undocumented event
-                evType = "IsListItemSelected"
-                index = msg.GetIndex()
-            Else
-                evType = "Unknown"
-            EndIf
-            timeNowStr = timeNow()
-            tabs = Len (timeNowStr) + Len (msgType) + 4
-            Print timeNowStr; "  "; msgType; ". Event Type: "; evType + " [" + msg.GetType ().ToStr () + "]. "; "Index: " + index.ToStr ();
-            If message <> ""
-                Print ". Message: "; message
-            Else
-                Print ""
-            EndIf
-            If Type (info) = "roAssociativeArray"
-                For Each key In info
-                    infoKey = info [key]
-                    If Type (GetInterface (infoKey, "ifIntOps")) = "ifIntOps"
-                        Print Tab (tabs); key + ": " + infoKey.ToStr ()
-                    Else
-                        Print Tab (tabs); key + ": "; infoKey
-                    EndIf
-                End For
-            EndIf
-        Else
-            ' An event type other than "roVideoScreenEvent" or "roVideoPlayerEvent"
-            ' Add additional code here to handle other event types
-            print msgType; ". Event Type: [" + "" + "]"
-        Endif
-    EndIf
 End Function
