@@ -1,5 +1,5 @@
 '********** Copyright 2016 Roku Corp.  All Rights Reserved. **********
-
+'(the part above is there because part of this code is from VideoExample, this is mostly made by me)
 sub Main()
     showChannelSGScreen()
   end sub
@@ -202,12 +202,3 @@ Function GetXML(url as String) as string
 	
 	return link.GetToString()
 end function
-Function timeNow () As String
-    dt = CreateObject ("roDateTime")
-    dt.ToLocalTime ()
-    hh = Right ("0" + dt.GetHours ().ToStr (), 2)
-    mm = Right ("0" + dt.GetMinutes ().ToStr (), 2)
-    ss = Right ("0" + dt.GetSeconds ().ToStr (), 2)
-    mmm = Right ("00" + dt.GetMilliseconds ().ToStr (), 3)
-    Return hh + ":" + mm + ":" + ss + "." + mmm
-End Function
