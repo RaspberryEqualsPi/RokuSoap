@@ -1,0 +1,26 @@
+<?xml version = "1.0" encoding = "utf-8" ?> 
+
+<component name="CenteredButton" extends="Button">
+    <script type="text/brightscript">
+        <![CDATA[
+        sub init()
+            ' Find the label
+            for i = 0 to m.top.getChildCount() - 1
+                child = m.top.getChild(i)
+                if child.subtype() = "Label"
+                    child.horizAlign = "center"
+                    child.observeField("horizAlign", "onHorizAlignChanged")
+                    exit for
+                end if
+            end for
+        end sub
+
+        sub onHorizAlignChanged(msg as object)
+            label = msg.getRoSGNode()
+            if label.horizAlign <> "center"
+                label.horizAlign = "center"
+            end if
+        end sub
+        ]]>
+    </script>
+</component>

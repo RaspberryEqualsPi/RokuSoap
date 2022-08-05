@@ -1,0 +1,96 @@
+<?xml version = "1.0" encoding = "utf-8" ?> 
+
+<!--********** Copyright 2016 Roku Corp.  All Rights Reserved. **********-->
+<component name = "VideoExample" extends = "Scene" >
+
+  <script type = "text/brightscript" >
+
+    <![CDATA[
+
+    sub init()
+      m.top.setFocus(true)
+      m.top.findNode("ttl").font.size = 80
+      m.top.findNode("searchBtn").observeField("buttonSelected","searchDialog")
+      'label = CreateObject("RoSGNode", "Label")
+      'label.text = "Search"
+      'label.horizAlign = "center"
+      'm.top.findNode("searchBtn").appendChild(label)
+      m.top.findNode("searchBtn").setFocus(true)
+    end sub
+    sub searchDialog()
+      keyboard = m.top.findNode("kb")
+      keyboard.setFocus(true)
+      keyboard.visible=true
+    end sub
+    function onKeyEvent(key as String, press as Boolean) as Boolean  
+    handled = false
+    oline = m.top.findNode("outline")
+    if press then
+      if key = "right" then
+        if m.top.curScr = "query" then
+          if oline.translation[0] < 1062 then
+            oline.translation = [oline.translation[0] + 208, 22]
+            m.top.selection++
+            handled = true
+          end if
+        end if
+      end if
+      if key = "left" then
+        if m.top.curScr = "query" then
+          if oline.translation[0] > 22 then
+            oline.translation = [oline.translation[0] - 208, 22]
+            m.top.selection--
+            handled = true
+          end if
+        end if
+      end if
+      if key = "OK" then
+        if m.top.curScr = "query" then
+          m.top.okPressed = true
+          handled = true
+        end if
+      end if
+    end if
+    return handled
+    end function
+    ]]>
+
+  </script>
+  <interface>
+      <field id="okPressed" type="boolean"/>
+      <field id="curScr" type="string"/>
+      <field id="selection" type="integer"/>
+  </interface>
+  <children>
+    <!-- <Video id = "exampleVideo"/> -->
+    <Button id="searchBtn"
+         text=" "
+         height="100"
+         translation="[355,360]"
+         minWidth="570"
+         maxWidth="570"
+         visible="true">
+         <Label id="itemLabel" height="100" width="570" text="Search" vertAlign="center" horizAlign="center" color="0x00000" />
+    </Button>
+    <Label 
+      id="ttl" 
+      height="720" 
+      width="1280" 
+      text="Roku Soap2Day" 
+      horizAlign="center" 
+      vertAlign="center" 
+      color="0x389cff" 
+      translation="[0,-50]"
+      font = "font:LargeBoldSystemFont"
+    />
+    <Poster id="outline"
+      uri="pkg:/images/outline.png"
+      translation="[22,22]"
+      width="196"
+      height="284"
+      visible="false"
+    />
+    <StandardKeyboardDialog id="kb" visible="false"/>
+  </children>
+
+</component>
