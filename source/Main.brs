@@ -1,5 +1,5 @@
 '********** Copyright 2016 Roku Corp.  All Rights Reserved. **********
-'(the part above is there because part of this code is from VideoExample, this is mostly made by me)
+'(the part above is there because part of this code is from roku examples, this is mostly made by me)
 sub Main()
     showChannelSGScreen()
   end sub
